@@ -5,7 +5,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;//PdfWriter;
 import java.awt.Color;
 
-public class photoboard {
+public class Photoboard {
 	// The final board will be resized to this height:
 	private static final float PREFERREDHEIGHT = 40.f;
 
