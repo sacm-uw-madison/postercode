@@ -1,6 +1,13 @@
 # contain private info
-
 *.dat 
 
 # licensed (open source)
 lib/*
+
+# vim
+*.swp
+*.swo
+
+# artifacts
+output/
+*.pdf
