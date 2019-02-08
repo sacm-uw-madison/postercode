@@ -1,5 +1,6 @@
 
 PEOPLE_DAT=people.dat
+#PICS_DIRECTORY=~sacmuse/public/pics-2018
 
 JAVAFILES=Photoboard.java
 MAINCLASS=Photoboard
@@ -19,9 +20,9 @@ build: $(CLASSFILES)
 $(OUTDIR)/%.class: %.java
 	@mkdir -p $(OUTDIR)
 	javac -cp $(CLASSPATH) -d $(OUTDIR) $^
-	
+
 $(OUTDIR)/poster.pdf: build
-	java -cp $(CLASSPATH):$(OUTDIR) $(MAINCLASS) $(PEOPLE_DAT) $@
+	java -cp $(CLASSPATH):$(OUTDIR) $(MAINCLASS) $(PEOPLE_DAT) $@ $(PICS_DIRECTORY)
 
 # TODO: fix this one
 $(OUTDIR)/poster_tiled.pdf: build

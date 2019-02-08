@@ -39,6 +39,8 @@ public class Photoboard {
     private static final String BACKGROUND_TEXTURE = "assets/bamboo_mat_texture.jpg";
     private static final String TITLE_IMAGE = "assets/title.png";
 
+    public static String PICS_DIRECTORY = "pics/";
+
     ///////////////////////////////////////////////////////////////////////////
     // Code to build the poster
     ///////////////////////////////////////////////////////////////////////////
@@ -46,7 +48,7 @@ public class Photoboard {
     public static void main(String[] args) {
         // Some checking.
         if (args.length < 2) {
-            System.out.println("Usage: ./photoboard people.dat poster.pdf");
+            System.out.println("Usage: ./photoboard people.dat poster.pdf [pics/]");
             return;
         }
 
@@ -54,6 +56,11 @@ public class Photoboard {
         String inputFile = args[0];
         // The PDF file with the poster.
         String outputFile = args[1];
+
+        // Optionally, a pics/ folder
+        if (args.length == 3) {
+            PICS_DIRECTORY = args[2];
+        }
 
         // Open the file if it exists.
         File peopledat = new File(inputFile);
@@ -215,8 +222,8 @@ public class Photoboard {
     /**
      * Print the given string at the given location on the poster.
      */
-    private static void stampString( PdfContentByte cb, String s, 
-            BaseFont font, float fontSize, float x, float y) 
+    private static void stampString( PdfContentByte cb, String s,
+            BaseFont font, float fontSize, float x, float y)
     {
         // Shrink to fit.
         while (font.getWidthPoint(s, fontSize) >= PHOTOWIDTH - 7.2f) {
@@ -233,8 +240,8 @@ public class Photoboard {
     /**
      * Add the given person to the poster at the given location.
      */
-    public static void stampPerson(PdfContentByte cb, Person person, 
-            BaseFont font, float x, float y) 
+    public static void stampPerson(PdfContentByte cb, Person person,
+            BaseFont font, float x, float y)
     {
         // the white rectangle
         cb.roundRectangle(x, y + 43, PHOTOWIDTH, LABELRECTHEIGHT, 10);
@@ -248,7 +255,7 @@ public class Photoboard {
         cb.beginText();
         cb.setRGBColorFill(0, 0, 0);
         stampString(cb, person.getName(), font, 12f, x + centerpt, y + 30 + 30);
-        stampString(cb, person.getId() + "@cs.wisc.edu", font, 10f, 
+        stampString(cb, person.getId() + "@cs.wisc.edu", font, 10f,
                 x + centerpt, y + 18 + 30); // TODO: do we want this?
         stampString(cb, person.getOffice(), font, 10f, x + centerpt, y + 6 + 30); // TODO: do we want this?
         cb.endText();
@@ -398,7 +405,7 @@ class Person implements Comparable<Person> {
      * Returns true if `pics/<username>.jpg` exists.
      */
     public boolean hasPhoto() {
-        return new File("pics/" + username + ".jpg").exists();
+        return new File(Photoboard.PICS_DIRECTORY + "/" + username + ".jpg").exists();
     }
 
     /**
@@ -428,12 +435,12 @@ class Person implements Comparable<Person> {
      */
     public Image getImage() {
         try {
-            return Image.getInstance("pics/" + getId() + ".jpg");
+            return Image.getInstance(Photoboard.PICS_DIRECTORY + "/" + getId() + ".jpg");
         } catch (Exception e) {
             try {
                 return Image.getInstance(Photoboard.UNKNOWN_PHOTO_IMAGE);
             } catch (Exception e2) {
-                System.out.println("Unable to load placeholder image: " 
+                System.out.println("Unable to load placeholder image: "
                         + Photoboard.UNKNOWN_PHOTO_IMAGE + " : " + e2);
                 return null;
             }
