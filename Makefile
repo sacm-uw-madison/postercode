@@ -1,12 +1,18 @@
 
-JAVAFILES=photoboard.java
-MAINCLASS=photoboard
+PEOPLE_DAT=people.dat
+
+JAVAFILES=Photoboard.java
+MAINCLASS=Photoboard
 
 CLASSPATH=lib/iText.jar
 
-OUTDIR=output/
+OUTDIR=output
 
 CLASSFILES=$(patsubst %.java, $(OUTDIR)/%.class, $(JAVAFILES))
+
+###############################################################################
+
+all: $(OUTDIR)/poster.pdf # $(OUTDIR)/poster_tiled.pdf
 
 build: $(CLASSFILES)
 
@@ -14,10 +20,14 @@ $(OUTDIR)/%.class: %.java
 	@mkdir -p $(OUTDIR)
 	javac -cp $(CLASSPATH) -d $(OUTDIR) $^
 	
-poster.pdf: build
-	java -cp $(CLASSPATH):$(OUTDIR) $(MAINCLASS)
+$(OUTDIR)/poster.pdf: build
+	java -cp $(CLASSPATH):$(OUTDIR) $(MAINCLASS) $(PEOPLE_DAT) $@
 
-poster_tiled.pdf: build
+# TODO: fix this one
+$(OUTDIR)/poster_tiled.pdf: build
 	convert poster.pdf -crop 3x2@ +repage +adjoin tile_3x3@_%d.pdf
 	# Merge into single PDF
 	pdftk tile_* cat output tile.pdf
+
+clean:
+	rm -rf $(OUTDIR)
