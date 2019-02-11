@@ -9,4 +9,4 @@ You will need to provide:
 - `people.dat`: A file where each person has a line with the format:
   `user:first:last:office`, where `user` is the person's username.
 - `pics/` a directory with all the pictures. The picture for user `user` should
-  be named `pics/users.png` (or jpeg or whatever).
+  be named `pics/users.jpg`.
